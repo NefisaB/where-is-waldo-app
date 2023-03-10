@@ -3,8 +3,6 @@ import data from "../data";
 
 const GameBoard = () => {
 
-    console.log(data[0])
-
     const [isPhotoClicked, setIsPhotoClicked] = useState(false);
     const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
     const [xCoord, setXCoord] = useState(0);
@@ -14,7 +12,7 @@ const GameBoard = () => {
     const handleOnImageClick = (e) => {
         setIsPhotoClicked(true);
         const rect = e.target.getBoundingClientRect();
-        setClickPosition({x: e.clientX - rect.left, y: e.clientY - rect.top})
+        setClickPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
         setXCoord((e.clientX - rect.left) / rect.width);
         setYCoord((e.clientY - rect.top) / rect.height);
 
@@ -23,8 +21,8 @@ const GameBoard = () => {
 
     const handleListItemClick = (e) => {
         e.stopPropagation();
-        if (xCoord.toFixed(2) - data[0].characters[0].xValue < 0.2 &&
-            yCoord.toFixed(2) - data[0].characters[0].yValue < 0.2) {
+        if (Math.abs(xCoord.toFixed(2) - data[0].characters[0].xValue) < 0.01 &&
+            Math.abs(yCoord.toFixed(2) - data[0].characters[0].yValue) < 0.01){
             alert("You've found Waldo");
         }
         setIsPhotoClicked(false);        
