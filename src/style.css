@@ -20,7 +20,13 @@ nav {
     position: relative;
     width: 98%;
     margin: 5px auto;
-    
+}
+
+.status {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    text-align: center;
 }
 
 .image {
@@ -28,4 +34,26 @@ nav {
     width: 100%;
     height: fit-content;
     
+}
+
+.characters-list {
+    list-style: none;
+    background-color:rgba(255, 255, 255, 0.8);
+    padding: 5px;
+    border-radius: 6px;
+}
+
+.characters-list li {
+    margin-left: 5px;
+    margin-top: 5px;
+    text-transform: uppercase;
+    border-bottom: 1px solid black;
+}
+
+.characters-list li:hover {
+    background-color: rgba(127, 127, 127, 0.5);
+}
+
+.characters-list li.found {
+    display: none;
 }

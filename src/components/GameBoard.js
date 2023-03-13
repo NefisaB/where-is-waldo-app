@@ -1,6 +1,5 @@
 import { collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import data from "../data";
 import { db } from "../firebase/config";
 
 const GameBoard = () => {
@@ -10,6 +9,8 @@ const GameBoard = () => {
     const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
     const [xCoord, setXCoord] = useState(0);
     const [yCoord, setYCoord] = useState(0);
+    const [imageClickStatus, setImageClickStatus] = useState("");
+    const [characters, setCharacters] = useState([]);
 
     const imagesRef = collection(db, "images");
 
@@ -18,6 +19,9 @@ const GameBoard = () => {
             const dbData = await getDocs(imagesRef);
             const filteredData = dbData.docs.map(doc => ({ ...doc.data() }));
             setImages(filteredData);
+            setCharacters(filteredData[0].characters.map(item => {
+                return {...item, found: false}
+            }));
         } catch (error) {
             console.log(error);
         }    
@@ -38,20 +42,36 @@ const GameBoard = () => {
         console.log(images);
     }
 
+    const isGameOver = () => {
+        if (characters.every(item => item.found === true)) {
+            alert("Game Over");
+        }
+    }
+
 
     const handleListItemClick = (e, characterName) => {
         e.stopPropagation();
-        console.log(characterName);
-        if (Math.abs(xCoord.toFixed(2) - data[0].characters[0].xValue) < 0.01 &&
-            Math.abs(yCoord.toFixed(2) - data[0].characters[0].yValue) < 0.01){
-            alert("You've found Waldo");
-        }
+
+        characters.forEach(element => {
+            if (element.name === characterName) {
+                if (Math.abs(xCoord.toFixed(2) - element.xPosition) < 0.01 &&
+                    Math.abs(yCoord.toFixed(2) - element.yPosition) < 0.01) {
+                    setImageClickStatus(`You've found ${element.name}`);
+                    element.found = true;
+                    isGameOver();
+                } else {
+                    setImageClickStatus(`That's not ${element.name}. Keep looking...`);
+                }
+            }
+        });
+
         setIsPhotoClicked(false);
     }
 
 
     return ( 
         <div className="gameboard" onClick={handleOnImageClick}>
+            <span className="status">{imageClickStatus}</span>
             {images.length > 0 &&
                 <img src={`${images[0].src}`}
                     className="image"
@@ -63,11 +83,13 @@ const GameBoard = () => {
                         top: `${clickPosition.y}px`,
                         left: `${clickPosition.x}px`
                     }}>
-                    <ul>
+                    <ul className="characters-list">
                         {
-                            images[0].characters.map(item => {
+                            characters && characters.map(item => {
                                 return (
-                                    <li onClick={(e) => handleListItemClick(e, item.name)}>{item.name}</li>
+                                    <li key={item.name}
+                                        className={item.found ? "found" : "missing"}
+                                        onClick={(e) => handleListItemClick(e, item.name)}>{item.name}</li>
                                 );
                             })
                         }
