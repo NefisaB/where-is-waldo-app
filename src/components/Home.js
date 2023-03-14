@@ -44,7 +44,7 @@ const Home = () => {
             {showModal &&
                 <Modal closeModal={closeModal} />}
             {!showModal && <div>
-            <Navbar />
+            <Navbar characters={characters}/>
                 <GameBoard image={image} characters={characters} />
             </div>}
         </div>);
