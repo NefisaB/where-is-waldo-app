@@ -1,12 +1,10 @@
 import "./style.css";
-import Navbar from "./components/Navbar";
-import GameBoard from "./components/GameBoard";
+import Home from "./components/Home";
 
 function App() {
   return (
     <div className="App">
-      <Navbar />
-      <GameBoard />
+      <Home />
     </div>
   );
 }

@@ -4,9 +4,7 @@
     box-sizing: border-box;
 }
 
-.App {
-    min-width: 100vw;
-    min-height: 100vh;
+body {
     background-color: aqua;
 }
 
@@ -56,4 +54,31 @@ nav {
 
 .characters-list li.found {
     display: none;
+}
+
+.modal {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal > div {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.level-btn {
+    text-transform: uppercase;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: rgb(22, 100, 66);
+    color:white;
 }

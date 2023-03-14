@@ -1,35 +1,12 @@
-import { collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
-import { db } from "../firebase/config";
+import { useState } from "react";
 
-const GameBoard = () => {
-
-    const [images, setImages] = useState([]);
+const GameBoard = ({image, characters}) => {
+    
     const [isPhotoClicked, setIsPhotoClicked] = useState(false);
     const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
     const [xCoord, setXCoord] = useState(0);
     const [yCoord, setYCoord] = useState(0);
     const [imageClickStatus, setImageClickStatus] = useState("");
-    const [characters, setCharacters] = useState([]);
-
-    const imagesRef = collection(db, "images");
-
-    const getImages = async () => {
-        try {
-            const dbData = await getDocs(imagesRef);
-            const filteredData = dbData.docs.map(doc => ({ ...doc.data() }));
-            setImages(filteredData);
-            setCharacters(filteredData[0].characters.map(item => {
-                return {...item, found: false}
-            }));
-        } catch (error) {
-            console.log(error);
-        }    
-    }
-
-    useEffect(() => {
-        getImages();
-    }, []);
 
     const handleOnImageClick = (e) => {
         setIsPhotoClicked(true);
@@ -39,7 +16,8 @@ const GameBoard = () => {
         setClickPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
         setXCoord((e.clientX - rect.left) / rect.width);
         setYCoord((e.clientY - rect.top) / rect.height);
-        console.log(images);
+
+        console.log(`x: ${xCoord}, y: ${yCoord}`)
     }
 
     const isGameOver = () => {
@@ -54,8 +32,8 @@ const GameBoard = () => {
 
         characters.forEach(element => {
             if (element.name === characterName) {
-                if (Math.abs(xCoord.toFixed(2) - element.xPosition) < 0.01 &&
-                    Math.abs(yCoord.toFixed(2) - element.yPosition) < 0.01) {
+                if (Math.abs(xCoord.toFixed(2) - element.xPosition) < 0.015 &&
+                    Math.abs(yCoord.toFixed(2) - element.yPosition) < 0.015) {
                     setImageClickStatus(`You've found ${element.name}`);
                     element.found = true;
                     isGameOver();
@@ -72,10 +50,9 @@ const GameBoard = () => {
     return ( 
         <div className="gameboard" onClick={handleOnImageClick}>
             <span className="status">{imageClickStatus}</span>
-            {images.length > 0 &&
-                <img src={`${images[0].src}`}
+                <img src={`${image.src}`}
                     className="image"
-                    alt="find waldo" />}
+                    alt="find waldo" />
             {
                 isPhotoClicked && <div className='dropdown'
                     style={{
