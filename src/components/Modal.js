@@ -22,8 +22,8 @@ const Modale = ({ levels, closeModal, time }) => {
         <div className="modal">
             <div>
                 {time.start !== 0 && 
-                <span>Your time is: {interval}</span>}
-                <h2>{levels.length > 0 ? "Please choose level" : "Thank you for playing"}</h2>
+                <span>Well done! Your time is: {interval}</span>}
+                <h2>{levels.length > 0 ? "Please choose level:" : "Thank you for playing!"}</h2>
                 {levelsList}
             </div>
         </div>

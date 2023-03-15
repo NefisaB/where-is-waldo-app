@@ -6,8 +6,7 @@ const Navbar = ({characters}) => {
                 {characters.map(item => {
                     return (<img
                         src={item.src}
-                        alt={item.name} key={item.name}
-                        />)
+                        alt={item.name} key={item.name} />);
                 })}
             </div>
         </nav>

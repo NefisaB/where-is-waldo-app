@@ -6,7 +6,7 @@ const GameBoard = ({image, characters, gameOver }) => {
     const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
     const [xCoord, setXCoord] = useState(0);
     const [yCoord, setYCoord] = useState(0);
-    const [imageClickStatus, setImageClickStatus] = useState("Where could he be ....");
+    const [imageClickStatus, setImageClickStatus] = useState("Look carefully ....");
 
     const handleOnImageClick = (e) => {
         setIsPhotoClicked(true);
