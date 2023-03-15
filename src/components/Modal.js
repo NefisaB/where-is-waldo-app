@@ -1,17 +1,29 @@
-const Modale = ({ show, closeModal }) => {
+const Modale = ({ levels, closeModal, time }) => {
     
-    const levels = ["easy", "medium", "hard"];
-
+    
     const levelsList = levels.map(level => {
         return <button key={level}
             className="level-btn"
             onClick={() => closeModal(level)}>{level}</button>
-    })
+    });
+
+    const convertMS = (ms) => {
+        let m, s;
+        s = Math.floor(ms / 1000);
+        m = Math.floor(s / 60);
+        s = s % 60;
+        return `${m > 9 ? m : "0" + m}:${s> 9 ? s : "0" + s} (m:s)`
+    }
+
+    const interval = convertMS(time.end - time.start);
+    
 
     return ( 
         <div className="modal">
             <div>
-                <h2>Please choose level</h2>
+                {time.start !== 0 && 
+                <span>Your time is: {interval}</span>}
+                <h2>{levels.length > 0 ? "Please choose level" : "Thank you for playing"}</h2>
                 {levelsList}
             </div>
         </div>

@@ -7,10 +7,12 @@ import { db } from "../firebase/config";
 
 const Home = () => {
 
+    const [levels, setLevels] = useState(["easy", "medium", "hard"]);
     const [images, setImages] = useState([]);
     const [image, setImage] = useState({});
     const [characters, setCharacters] = useState([]);
     const [showModal, setShowModal] = useState(true);
+    const [time, setTime] = useState({ start: 0, end: 0 });
 
     const imagesRef = collection(db, "images");
 
@@ -37,15 +39,23 @@ const Home = () => {
         setImage(temp[0]);
         setCharacters(temp[0].characters);
         setShowModal(false);
+        setLevels(prevState => prevState.filter(item => item !== level));
+        setTime({...time, start: Date.now()})
+    }
+
+    const gameOver = () => {
+        setShowModal(true);
+        setTime({ ...time, end: Date.now() })
+        console.log(time);
     }
 
     return (
         <div>
             {showModal &&
-                <Modal closeModal={closeModal} />}
+                <Modal levels={levels} closeModal={closeModal} time={time} />}
             {!showModal && <div>
             <Navbar characters={characters}/>
-                <GameBoard image={image} characters={characters} />
+                <GameBoard image={image} characters={characters} gameOver={gameOver} />
             </div>}
         </div>);
 }

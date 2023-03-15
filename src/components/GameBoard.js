@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-const GameBoard = ({image, characters}) => {
+const GameBoard = ({image, characters, gameOver }) => {
     
     const [isPhotoClicked, setIsPhotoClicked] = useState(false);
     const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
     const [xCoord, setXCoord] = useState(0);
     const [yCoord, setYCoord] = useState(0);
-    const [imageClickStatus, setImageClickStatus] = useState("");
+    const [imageClickStatus, setImageClickStatus] = useState("Where could he be ....");
 
     const handleOnImageClick = (e) => {
         setIsPhotoClicked(true);
@@ -22,7 +22,7 @@ const GameBoard = ({image, characters}) => {
 
     const isGameOver = () => {
         if (characters.every(item => item.found === true)) {
-            alert("Game Over");
+            gameOver();
         }
     }
 
@@ -34,7 +34,7 @@ const GameBoard = ({image, characters}) => {
             if (element.name === characterName) {
                 if (Math.abs(xCoord.toFixed(2) - element.xPosition) < 0.015 &&
                     Math.abs(yCoord.toFixed(2) - element.yPosition) < 0.015) {
-                    setImageClickStatus(`You've found ${element.name}`);
+                    setImageClickStatus(`You've found ${element.name}!`);
                     element.found = true;
                     isGameOver();
                 } else {
